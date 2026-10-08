@@ -364,7 +364,7 @@ une preuve d'exactitude.
 
 ## 10. Références techniques
 
-- [Base de connaissances du projet](doc/README.md)
+- [Base de connaissances du projet](docs/README.md)
 - [OpenDeckSMR](https://github.com/OpenDeckLab/OpenDeckSMR)
 - [Agents LangChain](https://docs.langchain.com/oss/python/langchain/agents)
 - [Intégration ChatOllama](https://docs.langchain.com/oss/python/integrations/chat/ollama)
