@@ -36,7 +36,7 @@ ne donne pas accès au scénario réel de chaque cas à analyser.
 | Marge thermique | `marge_EGT(observations, temperature_limite, capteur="LPT_Tin")` |
 
 Le simulateur, un filtre de Kalman et un algorithme de prédiction de RUL ne font pas encore partie des
-briques agentiques de cette version. Ils seront éventuellement rajouter selone l'évolution du projet. La présence du package OpenDeckSMR
+briques agentiques de cette version. Ils seront éventuellement rajouté selon l'évolution du projet. La présence du package OpenDeckSMR
 dans l'environnement pourra permetttre l'ajout d'une fonction d'appel au simulateur.
 
 ## 3. Ce qui est attendu de vous
