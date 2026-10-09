@@ -26,7 +26,13 @@ Three situations are considered: gradual ageing, compressor fouling and sensor d
 | Inverse estimation | `estimation_indicateurs_mlp(observations)` |
 | Thermal margin | `marge_EGT(observations, temperature_limite, capteur="LPT_Tin")` |
 
+<<<<<<< HEAD
 The simulator, a Kalman filter and a Remaining Useful Life (RUL) prediction algorithm are not yet included among the agent tools in this version. They may be added as the project develops. The OpenDeckSMR package available in the environment can support the addition of a function that calls the simulator.
+=======
+Le simulateur, un filtre de Kalman et un algorithme de prédiction de RUL ne font pas encore partie des
+briques agentiques de cette version. Ils seront éventuellement rajouté selon l'évolution du projet. La présence du package OpenDeckSMR
+dans l'environnement pourra permetttre l'ajout d'une fonction d'appel au simulateur.
+>>>>>>> bfbff55097d4fc0f2539e6c699b34c03ed4455ac
 
 ## 3. What is expected of you
 
