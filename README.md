@@ -286,7 +286,7 @@ Examine several failures in detail. A plausible explanation is not proof of corr
 
 ## 10. Technical references
 
-- [Project knowledge base](doc/README.md)
+- [Project knowledge base](docs/README.md)
 - [OpenDeckSMR](https://github.com/OpenDeckLab/OpenDeckSMR)
 - [LangChain agents](https://docs.langchain.com/oss/python/langchain/agents)
 - [ChatOllama integration](https://docs.langchain.com/oss/python/integrations/chat/ollama)
