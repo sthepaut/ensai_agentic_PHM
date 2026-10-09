@@ -1,116 +1,93 @@
 # ENSAI — Agentic AI for Predictive Maintenance
 
-## 1. Objectif du projet
+## 1. Project objective
 
-Construire un système agentique capable d'analyser les observations
-d'un moteur d'avion, de mobiliser des outils de calcul et une
-documentation technique, puis de proposer une décision argumentée
-de surveillance ou d'inspection.
+Build an agentic system capable of analysing observations from an aircraft engine, using computational tools and technical documentation, and providing a justified monitoring or inspection recommendation.
 
-Le système doit pouvoir répondre à cette question :
+The system should be able to answer the following question:
 
-> Avec les informations disponibles jusqu'au vol t, observe-t-on
-> une évolution préoccupante ? Quelles causes sont plausibles et
-> quelle vérification recommander ?
+> Based on the information available up to flight t, is there evidence of a concerning trend? What are the plausible causes, and what checks should be recommended?
 
-La première étape porte sur la détection, l'analyse et la demande
-d'inspection. Une extension pourra traiter la stratégie de maintenance
-lorsque les outils et scénarios correspondants seront disponibles.
+The first stage focuses on detection, analysis and inspection recommendations. An extension may address maintenance strategies once the corresponding tools and scenarios become available.
 
-## 2. Ce qui est fourni
+## 2. What is provided
 
-- Des trajectoires synthétiques d'observations moteur en cruise.
-- Un MLP d'inversion préentraîné, avec normalisation intégrée.
-- Une brique de calcul de marge thermique simplifiée.
-- Une base de connaissances dans `doc/`.
-- Un notebook de prise en main dans `notebooks/`.
+- Synthetic trajectories of engine observations under cruise conditions.
+- A pretrained inverse MLP with built-in normalisation.
+- A tool for computing a simplified thermal margin.
+- A knowledge base in `doc/`.
+- An introductory notebook in `notebooks/`.
 
-Trois situations sont considérées : vieillissement progressif,
-encrassement compresseur et dérive de capteur. Leur connaissance
-ne donne pas accès au scénario réel de chaque cas à analyser.
+Three situations are considered: gradual ageing, compressor fouling and sensor drift. Knowing these possible scenarios does not reveal the actual scenario associated with each case to be analysed.
 
-| Brique | Fonction |
+| Tool | Function |
 |---|---|
-| Lecture | `get_measure(trajectory_id, timestep=None)` |
-| Inversion | `estimation_indicateurs_mlp(observations)` |
-| Marge thermique | `marge_EGT(observations, temperature_limite, capteur="LPT_Tin")` |
+| Data retrieval | `get_measure(trajectory_id, timestep=None)` |
+| Inverse estimation | `estimation_indicateurs_mlp(observations)` |
+| Thermal margin | `marge_EGT(observations, temperature_limite, capteur="LPT_Tin")` |
 
-Le simulateur, un filtre de Kalman et un algorithme de prédiction de RUL ne font pas encore partie des
-briques agentiques de cette version. Ils seront éventuellement rajouter selone l'évolution du projet. La présence du package OpenDeckSMR
-dans l'environnement pourra permetttre l'ajout d'une fonction d'appel au simulateur.
+The simulator, a Kalman filter and a Remaining Useful Life (RUL) prediction algorithm are not yet included among the agent tools in this version. They may be added as the project develops. The OpenDeckSMR package available in the environment can support the addition of a function that calls the simulator.
 
-## 3. Ce qui est attendu de vous
+## 3. What is expected of you
 
-### Concevoir le système
+### Design the system
 
-Définir comment l'agent accède à la documentation, choisit les outils,
-exploite l'historique et construit sa conclusion.
+Define how the agent accesses the documentation, selects tools, uses historical observations and reaches its conclusions.
 
-Un premier agent unique est suffisant ; une architecture multi-agent pourra être envisagée en fin de projet et devra être justifiée
+A single agent is sufficient initially. A multi-agent architecture may be considered towards the end of the project and must be justified.
 
-### Produire des décisions argumentées
+### Produce justified decisions
 
-Pour chaque analyse, fournir :
+For each analysis, provide:
 
-- le moteur, l'instant de décision et la période examinée ;
-- les observations et calculs sur lesquels repose la conclusion ;
-- une hypothèse principale et les alternatives pertinentes ;
-- une recommandation de surveillance, d'inspection ou de vérification
-  de capteur ;
-- les limites et informations complémentaires nécessaires.
+- the engine, decision time and period examined;
+- the observations and calculations supporting the conclusion;
+- a primary hypothesis and relevant alternatives;
+- a recommendation for monitoring, inspection or sensor verification;
+- the limitations and additional information required.
 
-Le système doit pouvoir répondre « informations insuffisantes ».
-Il ne doit pas convertir une sortie d'algorithme ou une information en diagnostic certain.
+The system must be able to answer “insufficient information”. It must not treat an algorithm's output or a piece of information as a definitive diagnosis.
 
-### Évaluer l'apport de l'agent
+### Evaluate the agent's contribution
 
-Comparer le système à une chaîne fixe utilisant les mêmes données
-et outils : par exemple une surveillance de marge thermique avec une
-règle de persistance, dont les paramètres sont réglés sur les données
-de développement/validation.
+Compare the system against a fixed pipeline using the same data and tools. For example, this could be thermal-margin monitoring with a persistence rule whose parameters are tuned on the development/validation data.
 
-Distinguer au moins :
+Include at least:
 
-1. Une baseline sans LLM.
-2. Un agent simple disposant des outils et documents.
-3. Votre proposition et les améliorations que vous souhaitez tester.
+1. A baseline without an LLM.
+2. A simple agent with access to the tools and documents.
+3. Your proposed approach and the improvements you wish to test.
 
-Le projet ne consiste pas uniquement à produire un texte convaincant :
-il faut mesurer si les décisions sont plus pertinentes, mieux
-justifiées ou obtenues plus efficacement.
+The project is not just about producing convincing text: you must assess whether decisions are more appropriate, better justified or obtained more efficiently.
 
-### Améliorations possibles
+### Possible improvements
 
-Vous pouvez ajouter une analyse de tendance, une détection de rupture,
-une vérification de cohérence ou une nouvelle méthode d'estimation.
+You may add trend analysis, change-point detection, consistency checks or a new estimation method.
 
-Mesurer l'apport de chaque ajout. Un entraînement de LLM n'est pas requis.
+Measure the contribution of each addition. Training an LLM is not required.
 
-Ces briques seront ajouter sous forme de fonction à appeler pour l'agent et ajouté dans des fichiers .py dans src/ensai_agentic_student/tools
+These additional tools should be implemented as functions that the agent can call, in `.py` files under `src/ensai_agentic_student/tools/`.
 
-## 4. Organisation du dépôt
+## 4. Repository structure
 
-| Emplacement | Contenu |
+| Location | Contents |
 |---|---|
-| `src/ensai_agentic_student/tools/` | Briques métier à appeler |
-| `src/ensai_agentic_student/mlp_inverse.py` | Classe et chargement du MLP |
-| `models/best_model.pt` | Poids et scalers du modèle |
-| `data/trajectories/` | Données disponibles dans votre installation |
-| `doc/` | Connaissances utilisables par les agents |
-| `notebooks/` | Prise en main et exploration |
+| `src/ensai_agentic_student/tools/` | Callable domain-specific tools |
+| `src/ensai_agentic_student/mlp_inverse.py` | MLP class and loading function |
+| `models/best_model.pt` | Model weights and scalers |
+| `data/trajectories/` | Data available in your installation |
+| `doc/` | Knowledge available to the agents |
+| `notebooks/` | Getting started and data exploration |
 
-`doc/` est une ressource pour les agents. Le présent README décrit
-le travail et les choix d'implémentation destinés aux étudiants.
+The `doc/` directory is a resource for the agents. This README describes the assignment and implementation choices for students.
 
-## 5. Installation et premier appel
+## 5. Installation and first call
 
-Environnement de référence : Linux, Python 3.11, `uv`.
+Reference environment: Linux, Python 3.11, `uv`.
 
-Les commandes suivantes supposent un accès réseau pour télécharger
-les dépendances. Un nœud de calcul hors ligne nécessite un environnement
-préparé en amont.
+The following commands require network access to download dependencies. An offline compute node requires an environment prepared in advance.
 
-Depuis votre clone du dépôt :
+From your local clone of the repository:
 
 ```bash
 cd ensai_agentic_student
@@ -122,17 +99,13 @@ uv run python -c \
 uv run jupyter lab
 ```
 
-Sélectionner le Python du `.venv` du dépôt comme kernel du notebook.
+Select the Python interpreter from the repository's `.venv` as the notebook kernel.
 
-Ne pas copier un `.venv` provenant d'une autre machine. Les dépendances
-et `uv.lock` doivent être versionnés ; `.venv` ne doit pas l'être.
+Do not copy a `.venv` from another machine. Dependency declarations and `uv.lock` must be tracked in version control; `.venv` must not.
 
-Les fichiers de données et le checkpoint fournis doivent être présents
-aux emplacements indiqués ci-dessus. Leur mode de téléchargement dépend
-de la distribution remise par les encadrants ; ils ne sont pas
-nécessairement récupérés par un simple clone Git.
+The supplied data files and checkpoint must be present at the locations listed above. How they are downloaded depends on the distribution provided by the supervisors; cloning the Git repository may not retrieve them automatically.
 
-Premier exemple Python :
+First Python example:
 
 ```python
 from ensai_agentic_student.tools.data import get_measure
@@ -141,74 +114,60 @@ from ensai_agentic_student.tools.marge_egt import marge_EGT
 
 observations = get_measure(trajectory_id=1)
 
-# Exemple d'une décision prise au vol 100 :
+# Example of a decision made at flight 100:
 historique = observations.loc[observations["timestep"] <= 100]
 
 indicateurs = estimation_indicateurs_mlp(historique)
 marges = marge_EGT(historique, temperature_limite=1150.0)
 ```
 
-Ne pas normaliser manuellement les données du MLP.
-Consulter `doc/` pour les unités, domaines et limites d'interprétation.
+Do not manually normalise the MLP inputs. Refer to `doc/` for units, operating ranges and interpretation limits.
 
-## 6. Comment connecter un agent aux briques ?
+## 6. How do you connect an agent to the tools?
 
-Le LLM reçoit une mission, des documents et la description des fonctions
-qu'il peut appeler.
+The LLM receives a task, documents and descriptions of the functions it can call.
 
-Il propose un appel structuré ; le programme Python exécute la fonction
-et lui renvoie son résultat. Le LLM peut alors appeler un autre outil
-ou produire sa conclusion.
+It proposes a structured call; the Python program executes the function and returns its result. The LLM can then call another tool or produce its conclusion.
 
-Les calculs sont réalisés par les briques Python, pas inventés par
-le LLM. Les DataFrames sont convertis en JSON pour être transmis au modèle.
+Calculations are performed by the Python tools, not invented by the LLM. DataFrames are converted to JSON before being passed to the model.
 
-LangChain fournit une boucle de ce type avec `create_agent`.
-Vous pouvez utiliser un autre framework ou écrire votre propre boucle.
+LangChain provides this type of loop through `create_agent`. You may use another framework or implement your own loop.
 
-Commencer par un seul agent et un accès direct aux documents.
-Un système de recherche documentaire pourra être ajouté si son intérêt
-est démontré.
+Start with a single agent and direct access to the documents. A document retrieval system may be added if its benefits are demonstrated.
 
-### Exemple minimal entièrement local avec Ollama
+### Fully local minimal example with Ollama
 
-Cet exemple utilise un modèle à poids ouverts sous licence Apache 2.0,
-exécuté sur votre machine avec Ollama.
+This example uses an open-weight model released under the Apache 2.0 licence, running on your machine through Ollama.
 
-Aucune clé API et aucun service LLM payant ne sont nécessaires.
-Le calcul mobilise néanmoins votre CPU/GPU et votre mémoire.
+No API key or paid LLM service is required. Computation still uses your CPU/GPU and memory.
 
-#### Préparer Ollama et les dépendances
+#### Set up Ollama and the dependencies
 
-Installer [Ollama](https://ollama.com/download/linux) selon la procédure
-adaptée à votre machine.
+Install [Ollama](https://ollama.com/download/linux) using the procedure appropriate for your machine.
 
-Ollama est un programme distinct de l'environnement Python :
-installer `langchain-ollama` seul ne suffit pas.
+Ollama is a separate program from the Python environment: installing `langchain-ollama` alone is not enough.
 
-Depuis la racine du dépôt :
+From the repository root:
 
 ```bash
 uv add "langchain>=1,<2" langchain-ollama
 ```
 
-
-Vérifier que le serveur Ollama répond :
+Check that the Ollama server responds:
 
 ```bash
 ollama list
 ```
 
-Si aucun serveur n'est démarré, exécuter dans un autre terminal
-et le laisser ouvert :
+If no server is running, execute the following in another terminal and leave it open:
 
 ```bash
 ollama serve
 ```
 
-Ne pas lancer un second serveur si Ollama fonctionne déjà comme service.
+Do not start a second server if Ollama is already running as a service.
 
-Télécharger le modèle de départ puis sélectionner son nom :
+Download the initial model and select its name:
 
 ```bash
 ollama pull qwen3:8b
@@ -216,75 +175,55 @@ export AGENT_MODEL="qwen3:8b"
 export LANGSMITH_TRACING=false
 ```
 
-Les téléchargements initiaux nécessitent Internet. Une fois les
-dépendances et les poids disponibles, l'inférence peut fonctionner
-hors ligne.
+The initial downloads require Internet access. Once the dependencies and weights are available, inference can run offline.
 
-Sur cluster, préparer les téléchargements sur une machine autorisée
-et exécuter Ollama sur une ressource de calcul adaptée.
+On a cluster, prepare the downloads on an authorised machine and run Ollama on an appropriate compute resource.
 
-Dans cet exemple, Ollama et le script Python doivent tourner sur
-la même machine ou le même nœud.
+In this example, Ollama and the Python script must run on the same machine or node.
 
-Les données et la documentation sont envoyées au serveur Ollama local
-`http://localhost:11434`, pas à une API LLM hébergée.
+Data and documentation are sent to the local Ollama server at `http://localhost:11434`, not to a hosted LLM API.
 
-#### Brancher les briques métier
+#### Connect the domain-specific tools
 
-Lire et étudier le code dans `examples/agent_minimal.py`, puis lancer depuis la racine :
+Read and study the code in `examples/agent_minimal.py`, then run it from the repository root:
 
 ```bash
 uv run python examples/agent_minimal.py
 ```
 
-Ce code est un exemple de raccordement, pas un système de diagnostic
-validé. La syntaxe Python a été vérifiée ; l'exécution complète avec
-les modèles locaux n'a pas été testée lors de la préparation du README.
+This code is an integration example, not a validated diagnostic system. Its Python syntax has been checked; full execution with the local models was not tested when this README was prepared.
 
-Les outils exposés au LLM encapsulent les briques métier : il choisit
-des intervalles, sans transférer lui-même des DataFrames d'un outil
-à l'autre.
+The tools exposed to the LLM wrap the domain-specific functions: the LLM selects intervals without having to transfer DataFrames between tools itself.
 
-La limite de 30 instants réduit le volume des résultats et peut
-être adaptée.
+The limit of 30 time steps reduces the size of the results and can be adjusted.
 
-Dans votre version finale, traiter les erreurs d'outil, les limites
-d'itérations et les contextes trop longs.
+In your final version, handle tool errors, iteration limits and contexts that become too long.
 
-Le réglage `num_ctx=16384` est un point de départ : les documents,
-descriptions d'outils, échanges, résultats et génération doivent tenir
-dans le contexte.
+The `num_ctx=16384` setting is a starting point: the documents, tool descriptions, conversation, results and generated output must fit within the context window.
 
-Réduire les résultats ou sélectionner les documents si nécessaire.
-Augmenter le contexte augmente la mémoire utilisée.
+Reduce the results or select relevant documents if necessary. Increasing the context window increases memory usage.
 
-Une température de génération nulle ne garantit pas une reproductibilité
-parfaite. Vérifier que le modèle appelle réellement les outils et ne
-rédige pas simplement une imitation d'appel dans son texte.
+A generation temperature of zero does not guarantee perfect reproducibility. Check that the model actually calls the tools rather than merely generating text that imitates a tool call.
 
-## 7. Suggestions de modèles ouverts et gratuits à exécuter localement
+## 7. Suggested open models for free local inference
 
-Les trois modèles ci-dessous sont distribués avec leurs poids sous
-licence Apache 2.0 et proposés avec prise en charge des outils dans Ollama.
+The three models below are distributed with their weights under the Apache 2.0 licence and are available with tool-calling support in Ollama.
 
-L'ouverture des poids n'implique pas que toutes les données
-d'entraînement soient publiques.
+Open weights do not imply that all training data is publicly available.
 
-Aucun ne nécessite d'abonnement ni de facturation par appel pour
-l'exécution locale décrite ici.
+None requires a subscription or per-call charges for the local execution described here.
 
-| Modèle | Identifiant Ollama | Taille | Licence | Usage proposé |
+| Model | Ollama identifier | Size | Licence | Suggested use |
 |---|---|---|---|---|
-| Qwen3 8B | `qwen3:8b` | 8 milliards de paramètres | Apache 2.0 | Point de départ de l'exemple |
-| IBM Granite 3.3 8B | `granite3.3:8b` | Environ 8 milliards | Apache 2.0 | Comparer une autre famille sur les mêmes outils et documents |
-| Mistral NeMo 12B Instruct | `mistral-nemo:12b` | 12 milliards | Apache 2.0 | Comparer un modèle plus volumineux si les ressources le permettent |
+| Qwen3 8B | `qwen3:8b` | 8 billion parameters | Apache 2.0 | Starting point for the example |
+| IBM Granite 3.3 8B | `granite3.3:8b` | Approximately 8 billion parameters | Apache 2.0 | Compare another model family using the same tools and documents |
+| Mistral NeMo 12B Instruct | `mistral-nemo:12b` | 12 billion parameters | Apache 2.0 | Compare a larger model if resources allow |
 
-Ce choix ne constitue pas un classement de performances sur le projet.
-La capacité à appeler des outils ne garantit pas la pertinence du diagnostic.
+This selection is not a performance ranking for this project. The ability to call tools does not guarantee an appropriate diagnosis.
 
-### Changer de modèle sans changer les outils
+### Switch models without changing the tools
 
-Pour utiliser Granite :
+To use Granite:
 
 ```bash
 ollama pull granite3.3:8b
@@ -292,7 +231,7 @@ export AGENT_MODEL="granite3.3:8b"
 uv run python examples/agent_minimal.py
 ```
 
-Pour utiliser Mistral NeMo :
+To use Mistral NeMo:
 
 ```bash
 ollama pull mistral-nemo:12b
@@ -300,79 +239,61 @@ export AGENT_MODEL="mistral-nemo:12b"
 uv run python examples/agent_minimal.py
 ```
 
-Un seul modèle est nécessaire pour démarrer. Vous n'avez pas besoin
-de télécharger les trois immédiatement.
+Only one model is needed to get started. You do not need to download all three immediately.
 
-### Ressources et comparaison
+### Resources and comparison
 
-- Un GPU peut accélérer l'inférence ; une exécution CPU peut être lente.
-- Le besoin mémoire dépend du modèle, de la quantification, du contexte
-  et de la concurrence. La taille du téléchargement ne correspond pas
-  à la mémoire totale.
-- Tester d'abord un cas court avant de lancer une campagne d'évaluation.
-- Consigner modèle, version/digest, quantification, versions
-  Ollama/LangChain, taille de contexte et paramètres de génération
-  pour reproduire les résultats.
-- Comparer sur les mêmes trajectoires, instants de décision, outils
-  et budgets d'appels, en documentant les adaptations propres
-  à chaque modèle.
+- A GPU can speed up inference; CPU execution may be slow.
+- Memory requirements depend on the model, quantisation, context window and concurrency. Download size is not the same as total memory usage.
+- Test a short case before launching an evaluation campaign.
+- Record the model, version/digest, quantisation, Ollama/LangChain versions, context window size and generation settings to make results reproducible.
+- Compare models using the same trajectories, decision times, tools and tool-call budgets, documenting any model-specific adjustments.
 
-## 8. Protocole d'évaluation
+## 8. Evaluation protocol
 
-- Séparer les ensembles par trajectoire entière.
-- Régler prompts, seuils et architecture sur développement/validation.
-- Conserver un test final indépendant et figer la configuration
-  avant son utilisation.
-- Pour une décision au temps t, ne jamais exploiter les observations
-  futures.
-- Ne jamais donner à l'agent les vrais états, scénarios ou dates
-  d'événement du cas testé.
-- Les références cachées restent accessibles uniquement à l'évaluateur.
+- Split the datasets by entire trajectory.
+- Tune prompts, thresholds and architecture using development/validation data.
+- Keep an independent final test set and freeze the configuration before using it.
+- For a decision at time t, never use future observations.
+- Never provide the agent with the true health states, scenario labels or event times for the case being tested.
+- Hidden reference information must remain accessible only to the evaluator.
 
-La fonction de lecture ne renvoie que les observations, mais cela
-ne protège pas le pickle source si l'agent dispose d'un accès libre
-au disque. Limiter ses ressources aux outils et aux documents autorisés.
+The data-loading function returns only observations, but this does not protect the source pickle if the agent has unrestricted filesystem access. Restrict its resources to the authorised tools and documents.
 
-Comparer, lorsque les annotations nécessaires sont disponibles :
+Where the necessary annotations are available, compare:
 
-- les fausses alertes sur les cas de référence ;
-- la détection des anomalies ;
-- le délai de détection ;
-- la pertinence de l'inspection proposée ;
-- la proportion de conclusions insuffisamment étayées.
+- false alarms on reference cases;
+- anomaly detection;
+- detection delay;
+- the appropriateness of the proposed inspection;
+- the proportion of insufficiently supported conclusions.
 
-Les critères de référence doivent être définis avec les encadrants :
-une étiquette de scénario ne suffit pas à déterminer l'action correcte
-à chaque instant.
+Reference criteria must be defined with the supervisors: a scenario label alone is not enough to determine the correct action at every time step.
 
-Mesurer aussi le nombre d'appels d'outils, la latence, la consommation
-mémoire et la stabilité sur plusieurs exécutions.
+Also measure the number of tool calls, latency, memory usage and stability across multiple runs.
 
-Étudier quelques échecs en détail. Une explication plausible n'est pas
-une preuve d'exactitude.
+Examine several failures in detail. A plausible explanation is not proof of correctness.
 
-## 9. Livrables attendus
+## 9. Expected deliverables
 
-- Un code installable, documenté et reproductible.
-- Une description de l'architecture et des choix de modèles,
-  outils et documents.
-- Une baseline déterministe et une comparaison expérimentale.
-- Des traces d'exécution montrant les observations utilisées,
-  appels d'outils et décisions.
-- Une analyse des limites, erreurs et améliorations possibles.
-- Une démonstration sur des trajectoires réservées à l'évaluation.
+- Installable, documented and reproducible code.
+- A description of the architecture and the choices of models, tools and documents.
+- A deterministic baseline and an experimental comparison.
+- Execution traces showing the observations used, tool calls and decisions.
+- An analysis of limitations, errors and possible improvements.
+- A demonstration using trajectories reserved for evaluation.
 
-## 10. Références techniques
+## 10. Technical references
 
-- [Base de connaissances du projet](doc/README.md)
+- [Project knowledge base](doc/README.md)
 - [OpenDeckSMR](https://github.com/OpenDeckLab/OpenDeckSMR)
-- [Agents LangChain](https://docs.langchain.com/oss/python/langchain/agents)
-- [Intégration ChatOllama](https://docs.langchain.com/oss/python/integrations/chat/ollama)
-- [Installation Ollama sur Linux](https://ollama.com/download/linux)
-- [Appels d'outils Ollama](https://docs.ollama.com/capabilities/tool-calling)
-- [Qwen3 8B : modèle et licence](https://huggingface.co/Qwen/Qwen3-8B)
-- [Granite 3.3 8B : modèle et licence](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct)
-- [Mistral NeMo Instruct : modèle et licence](https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407)
-- [Qwen3 dans Ollama](https://ollama.com/library/qwen3:8b)
-- [Granite dans Ollama](https://ollama.com/library/granite3.3:8b)
-- [Mistral NeMo dans Ollama](https://ollama.com/library/mistral-nemo:12b)
+- [LangChain agents](https://docs.langchain.com/oss/python/langchain/agents)
+- [ChatOllama integration](https://docs.langchain.com/oss/python/integrations/chat/ollama)
+- [Installing Ollama on Linux](https://ollama.com/download/linux)
+- [Ollama tool calling](https://docs.ollama.com/capabilities/tool-calling)
+- [Qwen3 8B: model and licence](https://huggingface.co/Qwen/Qwen3-8B)
+- [Granite 3.3 8B: model and licence](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct)
+- [Mistral NeMo Instruct: model and licence](https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407)
+- [Qwen3 in Ollama](https://ollama.com/library/qwen3:8b)
+- [Granite in Ollama](https://ollama.com/library/granite3.3:8b)
+- [Mistral NeMo in Ollama](https://ollama.com/library/mistral-nemo:12b)

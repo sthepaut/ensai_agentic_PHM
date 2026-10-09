@@ -1,4 +1,4 @@
-"""Estimation des six paramètres de santé à partir des observations brutes."""
+"""Estimate the six health parameters from raw observations."""
 from functools import lru_cache
 from pathlib import Path
 
@@ -11,12 +11,12 @@ def _load_mlp(model_path):
 
 
 def estimation_indicateurs_mlp(observations, model_path=None):
-    """Prédire les six états santé, une ligne par observation.
+    """Predict the six health states, with one row per observation.
 
-    observations : DataFrame contenant conditions CR et six mesures brutes.
-    model_path : checkpoint optionnel ; défaut models/best_model.pt du dépôt.
-    Retour : DataFrame des six estimations, dans leurs unités d'origine.
-    Les scalers sont intégrés au modèle : ne pas normaliser les entrées.
+    observations : DataFrame containing CR conditions and six raw measurements.
+    model_path : optional checkpoint; defaults to models/best_model.pt in the repository.
+    Returns: a DataFrame of the six estimates, in their original units.
+    Scalers are built into the model: do not normalize the inputs.
     """
     if model_path is None:
         model_path = Path(__file__).resolve().parents[3] / 'models' / 'best_model.pt'

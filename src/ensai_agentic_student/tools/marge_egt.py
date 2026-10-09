@@ -1,31 +1,35 @@
-"""Marge thermique pédagogique : LPT_Tin est supposée être un proxy de l'EGT.
+"""Educational thermal margin: LPT_Tin is assumed to be an EGT proxy.
 
-Cette hypothèse ne constitue pas une identification physique des deux capteurs.
-Aucune correction selon les conditions de vol n'est appliquée.
+This assumption does not imply physical equivalence between the two sensors.
+No correction for flight conditions is applied.
 """
 import numpy as np
 import pandas as pd
 
 
 def marge_EGT(observations, temperature_limite, capteur='LPT_Tin'):
-    """Calculer temperature_limite - température observée.
+    """Calculate temperature_limite - observed temperature.
 
-    observations : DataFrame retourné par get_measure.
-    temperature_limite : limite pédagogique fixe, dans la même unité que le capteur.
-    capteur : nom exact de la colonne utilisée comme proxy EGT.
+    observations : DataFrame returned by get_measure.
+    temperature_limite : fixed educational limit, in the same unit as the sensor.
+    capteur : exact name of the column used as the EGT proxy.
 
-    Retour : DataFrame avec timestep (si présent), temperature_proxy_EGT,
-    marge_EGT. Les points non exploitables restent présents avec des NaN.
-    Une marge négative signifie un dépassement de la limite choisie ; ce n'est
-    pas, à elle seule, un diagnostic de panne ou une décision de maintenance.
+    Returns: a DataFrame with timestep (if present), temperature_proxy_EGT,
+    and marge_EGT. Unusable observations remain present with NaN values.
+    A negative margin means the chosen limit has been exceeded; on its own,
+    this is neither a fault diagnosis nor a maintenance decision.
     """
     if temperature_limite is None or not np.isscalar(temperature_limite):
-        raise ValueError('Fournir une temperature_limite numérique dans la même unité que le capteur.')
+        raise ValueError(
+            'Provide a numerical temperature_limite in the same unit as the sensor.'
+        )
     temperature_limite = float(temperature_limite)
     if not np.isfinite(temperature_limite):
-        raise ValueError('temperature_limite doit être finie.')
+        raise ValueError('temperature_limite must be finite.')
     if capteur not in observations.columns:
-        raise ValueError(f'Capteur {capteur!r} absent. Colonnes disponibles : {list(observations.columns)}')
+        raise ValueError(
+            f'Sensor {capteur!r} not found. Available columns: {list(observations.columns)}'
+        )
 
     temperature = observations[capteur].astype(float)
     valides = np.isfinite(temperature)

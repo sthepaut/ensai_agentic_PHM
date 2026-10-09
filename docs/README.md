@@ -1,41 +1,41 @@
-# Base de connaissances des agents
+# Agent knowledge base
 
-Ces documents servent à interpréter les observations et les outils
-du projet ENSAI de maintenance prédictive.
+These documents support the interpretation of observations and tools
+in the ENSAI predictive maintenance project.
 
 ## Documents
 
-- [Mission et périmètre](01_objectif_et_perimetre.md)
-- [Mesures et conditions](02_mesures_et_conditions.md)
-- [Indicateurs de santé](03_indicateurs_de_sante.md)
-- [Scénarios et diagnostic](04_scenarios_et_diagnostic.md)
-- [Outils disponibles](05_outils_disponibles.md)
-- [Décisions et justification](06_decisions_et_justification.md)
+- [Mission and scope](01_objectif_et_perimetre.md)
+- [Measurements and operating conditions](02_mesures_et_conditions.md)
+- [Health indicators](03_indicateurs_de_sante.md)
+- [Scenarios and diagnosis](04_scenarios_et_diagnostic.md)
+- [Available tools](05_outils_disponibles.md)
+- [Decisions and justification](06_decisions_et_justification.md)
 
 ## Conventions
 
-Les noms de colonnes sont ceux du code. Les exemples et seuils
-pédagogiques ne sont pas des prescriptions constructeur.
+Column names match those used in the code. Educational examples
+and thresholds are not manufacturer instructions.
 
-Les connaissances générales sur les scénarios peuvent être utilisées.
-Les étiquettes de scénario, états réels et événements cachés d'une
-trajectoire ne sont pas des observations autorisées.
+General knowledge about the scenarios may be used.
+A trajectory's scenario labels, true states, and hidden events
+are not authorized observations.
 
-À une date de décision donnée, utiliser seulement les observations
-disponibles jusqu'à cette date. Les identifiants servent à retrouver
-les données, jamais à déduire le scénario.
+At a given decision timestep, use only observations available up to
+that timestep. Identifiers are used to retrieve data, never to infer
+the scenario.
 
-Version initiale : lecture des observations, inversion MLP et marge
-thermique. Ne pas supposer disponibles un Kalman, une RUL ou une
-action de maintenance.
+Initial version: observation retrieval, MLP inversion, and thermal
+margin calculation. Do not assume that Kalman filtering, RUL estimation,
+or maintenance actions are available.
 
-## Sources et portée
+## Sources and scope
 
-Les définitions des capteurs, conditions et états reposent sur OpenDeckSMR :
+Sensor, operating condition, and state definitions are based on OpenDeckSMR:
 
 - https://github.com/OpenDeckLab/OpenDeckSMR/blob/main/doc/doc.md
 - https://github.com/OpenDeckLab/OpenDeckSMR/blob/main/src/odsmr/sensors.py
 
-Les signatures d'outils et les hypothèses pédagogiques sont propres
-à ce projet. Le code et la configuration effectivement fournis font
-référence en cas de changement.
+Tool signatures and educational assumptions are specific to this project.
+If changes occur, the code and configuration actually provided
+are the authoritative reference.
